@@ -140,8 +140,8 @@ function Magnetic({ children, href, primary = false, className = "" }: { childre
 }
 
 function Glass({ children, className = "", tilt = true, onClick }: { children: React.ReactNode; className?: string; tilt?: boolean; onClick?: () => void }) {
-  const ref = useRef<HTMLDivElement>(null); const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  return <motion.div ref={ref} className={`glass ${className}`} style={{ rotateX: tilt ? rotation.x : 0, rotateY: tilt ? rotation.y : 0 }} transition={{ type: "spring", stiffness: 280, damping: 24 }} onClick={onClick} onMouseMove={(e) => { const r = ref.current?.getBoundingClientRect(); if (!r) return; const px = (e.clientX - r.left) / r.width - 0.5; const py = (e.clientY - r.top) / r.height - 0.5; ref.current.style.setProperty("--gx", `${(px + 0.5) * 100}%`); ref.current.style.setProperty("--gy", `${(py + 0.5) * 100}%`); setRotation({ x: -py * 3.5, y: px * 3.5 }); }} onMouseLeave={() => setRotation({ x: 0, y: 0 })}><span className="glass-shine" /><span className="glass-border" />{children}</motion.div>;
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  return <motion.div className={`glass ${className}`} style={{ rotateX: tilt ? rotation.x : 0, rotateY: tilt ? rotation.y : 0 }} transition={{ type: "spring", stiffness: 280, damping: 24 }} onClick={onClick} onMouseMove={(e) => { const node = e.currentTarget; const r = node.getBoundingClientRect(); const px = (e.clientX - r.left) / r.width - 0.5; const py = (e.clientY - r.top) / r.height - 0.5; node.style.setProperty("--gx", `${(px + 0.5) * 100}%`); node.style.setProperty("--gy", `${(py + 0.5) * 100}%`); setRotation({ x: -py * 3.5, y: px * 3.5 }); }} onMouseLeave={() => setRotation({ x: 0, y: 0 })}><span className="glass-shine" /><span className="glass-border" />{children}</motion.div>;
 }
 
 function ProjectVisual({ kind, expanded = false }: { kind: string; expanded?: boolean }) {
